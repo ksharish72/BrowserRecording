@@ -39,12 +39,36 @@ function removePlayAndSaveBtnELements() {
 }
 
 document.addEventListener("click", function(e) {
-  if (e.target && e.target.className == "playBtn") {
-    soundFile.play(); // play the result!
+  if (e.target) {
+    if (e.target.className == "playBtn") {
+      // play button
+      if (e.target.innerHTML == "Play Button") {
+        soundFile.play(); // play the result!
+        e.target.innerHTML = "Stop Playing";
+        return;
+      }
+      if (e.target.innerHTML == "Stop Playing") {
+        soundFile.stop(); // stop the music
+        return;
+      }
+      return;
+    }
+    if (e.target.className == "saveBtn") {
+      save(soundFile, "browserRecording");
+      return;
+    }
   }
 });
 function draw() {
-  if (typeof mic != "undefined") {
+  if (typeof soundFile != "undefined") {
+    if (!soundFile.isPlaying()) {
+      var playBtnElement = document.getElementsByClassName("playBtn")[0];
+      if (typeof playBtnElement != "undefined")
+        playBtnElement.innerHTML = "Play Button";
+    }
+  }
+
+  /* if (typeof mic != "undefined") {
     background(0);
     micLevel = mic.getLevel();
     console.log(micLevel);
@@ -54,7 +78,7 @@ function draw() {
       10,
       10
     );
-  }
+  }*/
 }
 
 function appendPlayAndSaveBtnElements() {
